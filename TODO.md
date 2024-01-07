@@ -1,0 +1,11 @@
+# TODO
+- Number Theory
+- Polynomials
+	- Interpolating Polynomials
+	- Finding Roots (Newton-Raphson Method)
+- Complex Numbers
+	- Fractals
+- Linear Algebra (Vectors & Matrices)
+- Sorting
+- Combinatorial Mathematics
+- Statistics
