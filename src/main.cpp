@@ -93,6 +93,7 @@ int main(int argc, char* argv[]) {
 	std::cout << distinct_roots(p) << "\n";
 	std::vector<double> roots = find_roots(p, -100, 100);
 
-	for (double &b : roots)
+	for (double &b : roots) {
 		std::cout << std::format("Root at: x = {}", b) << "\n";
+	}
 }
