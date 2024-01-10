@@ -90,6 +90,51 @@ double polynomial::operator()(const double x) {
 	return B;
 }
 
+void polynomial::operator*=(const double scalar) {
+	for (size_t k = 0; k <= N; k++)
+		this->coeffs[k] *= scalar;
+}
+
+void polynomial::operator*=(polynomial &f) {
+	polynomial h = ((*this) * f);
+	if (h.N > this->N) {
+		this->N = h.N;
+		this->coeffs = static_cast<double*>(malloc(sizeof(double) * (N+1)));
+	}
+
+	for (size_t k = 0; k <= N; k++)
+		this->coeffs[k] = h[k];
+}
+
+void polynomial::operator/=(const double scalar) {
+	assert(scalar != 0);
+
+	for (size_t k = 0; k <= N; k++)
+		this->coeffs[k] /= scalar;
+}
+
+void polynomial::operator+=(polynomial &g) {
+	double *tmp = static_cast<double*>(malloc(sizeof(double) * (N+1)));
+
+	for (size_t k = 0; k <= MAX(this->N, g.N); k++) {
+		double c = 0;
+		if (k <= this->N)
+			c += this->coeffs[k];
+		if (k <= g.N)
+			c += g[k];
+		tmp[k] = c;
+	}
+
+	this->coeffs = static_cast<double*>(malloc(sizeof(double) * (N+1)));
+	for (size_t k = 0; k <= N; k++)
+		*(this->coeffs++) = *(tmp++);
+}
+
+void polynomial::operator-=(polynomial &g) {
+	polynomial h = (g * -1);
+	(*this) += h;
+}
+
 polynomial polynomial::trim(const double e) const {
 	int M = this->N;
 
@@ -128,6 +173,17 @@ polynomial power_func(size_t degree) {
 	polynomial P(degree);
 	P[degree] = 1;
 	return P;
+}
+
+bool is_power_func(const polynomial &p) {
+	polynomial T = p.trim();
+
+	for (size_t k = 0; k < T.N; k++) {
+		if (T[k] != 0)
+			return false;
+	}
+
+	return true;
 }
 
 // returns the degree of the smallest degree, non-zero term
@@ -795,4 +851,37 @@ std::vector<double> find_roots(polynomial &p, const double min_x, const double m
 
 	find_roots(p, &chain, &roots, a, b);
 	return roots;
+}
+
+// this assumes p is unimodal on [a0, b0]
+double gss(polynomial &p, const double a0, const double b0, const bool min, const double tol) {
+	double r = (-1 + std::sqrt(5))/2;
+
+	double a = a0, b = b0;
+	double x1, x2;
+	double y1, y2;
+
+	x1 = a + (1-r)*(b-a);
+	x2 = a + (r)*(b-a);
+
+	y1 = p(x1);
+	y2 = p(x2);
+
+	while (ABS(b-a) > tol) {
+		if ((min && y1 > y2) || (!min && y1 < y2)) {
+			a = x1;
+			x1 = x2;
+			y1 = y2;
+			x2 = a + (r)*(b-a);
+			y2 = p(x2);
+		} else {
+			b = x2;
+			x2 = x1;
+			y2 = y1;
+			x1 = a + (1-r)*(b-a);
+			y1 = p(x1);
+		}
+	}
+
+	return (a+b)/2;
 }

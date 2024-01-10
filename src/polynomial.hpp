@@ -38,6 +38,16 @@ typedef struct polynomial {
 
 	double operator()(const double x);
 
+	void operator*=(const double scalar);
+
+	void operator*=(polynomial &f);
+
+	void operator/=(const double scalar);
+
+	void operator+=(polynomial &g);
+
+	void operator-=(polynomial &g);
+
 	// removes any leading coefficients if
 	// |ak| < e
 	// 0x^3 + 2x^2 + x + 1 -> 2x^2 + x + 1
@@ -47,6 +57,8 @@ typedef struct polynomial {
 std::ostream& operator<<(std::ostream& out, polynomial p);
 
 polynomial power_func(size_t degree);
+
+bool is_power_func(const polynomial &p);
 
 int min_degree(polynomial &p);
 
@@ -124,5 +136,10 @@ size_t distinct_roots(polynomial &p);
 
 // searches for roots
 std::vector<double> find_roots(polynomial &p, const double min_x, const double max_x, size_t max_its = 10);
+
+// golden section search
+// https://people.math.wisc.edu/~chr/am205/g_act/am205_workshop_optimization.pdf
+// searches for a minimum on [a,b]
+double gss(polynomial &p, const double a, const double b, const bool min=true, const double tol = 10e-6);
 
 #endif

@@ -3,6 +3,7 @@
 - Polynomials
 	- Interpolating Polynomials
 	- Finding Roots (Newton-Raphson Method)
+	- Add operators +=, -=, *=, /=, etc. (TEST)
 - Complex Numbers
 	- Fractals
 - Linear Algebra (Vectors & Matrices)

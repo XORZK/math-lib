@@ -84,6 +84,10 @@ int main(int argc, char* argv[]) {
 	p[3] = 1;
 	p[4] = 1;
 
+	polynomial l1(1);
+	l1[1] = 1;
+
+	/*
 	std::vector<polynomial> chain = sturm_chain(p);
 
 	for (polynomial &p : chain)
@@ -93,7 +97,9 @@ int main(int argc, char* argv[]) {
 	std::cout << distinct_roots(p) << "\n";
 	std::vector<double> roots = find_roots(p, -100, 100);
 
-	for (double &b : roots) {
-		std::cout << std::format("Root at: x = {}", b) << "\n";
-	}
+	for (double &b : roots)
+		std::cout << std::format("Root at: x = {}", b) << "\n";*/
+	std::cout << p << "\n";
+
+	std::cout << p << "\n";
 }
