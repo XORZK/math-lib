@@ -32,6 +32,12 @@ typedef struct polynomial {
 
 	polynomial derivative() const;
 
+	polynomial antiderivative(const double C) const;
+
+	// integral of P(x) from A -> B
+	// A < B
+	polynomial integral(const double A, const double B) const;
+
 	double& operator[](const size_t deg);
 
 	complex operator()(const complex &x);

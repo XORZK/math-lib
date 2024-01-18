@@ -61,6 +61,28 @@ polynomial polynomial::derivative() const {
 	return d;
 }
 
+polynomial polynomial::antiderivative(const double C) const {
+	polynomial I = polynomial(N+1);
+
+	for (size_t k = 0; k <= N; k++)
+		I[k+1] = this->coeffs[k+1]/(k+1);
+
+	I[0] = C;
+
+	return I;
+}
+
+// integral of P(x) from A -> B
+// A < B
+polynomial polynomial::integral(const double A, const double B) const {
+	if (A > B)
+		return (*this).integral(B, A);
+
+	polynomial I = this->antiderivative(0);
+
+	return I(B) - I(A);
+}
+
 double& polynomial::operator[](const size_t deg) {
 	assert(deg >= 0 && deg <= N);
 	return this->coeffs[deg];
